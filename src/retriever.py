@@ -1,13 +1,14 @@
+import pickle
 from sentence_transformers import SentenceTransformer, util
-from typing import List, Dict
+
+with open("data/chunk_embeddings.pkl", "rb") as f:
+    chunks, chunk_embeddings = pickle.load(f)
 
 # Ladda modellen en gång vid uppstart
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
-def retrieve_context(
-    question: str, chunks: List[Dict[str, str]], top_n: int = 3
-) -> str:
+def retrieve_context(question: str, top_n: int = 3) -> str:
     """
     Hittar de mest relevanta textavsnitten (chunks) för en given fråga baserat på semantisk likhet.
 
@@ -17,11 +18,7 @@ def retrieve_context(
     :return: En sträng med de mest relevanta textavsnitten och deras källor
     """
 
-    # Extrahera själva texterna från chunks
-    texts = [chunk["content"] for chunk in chunks]
-
-    # Skapa embeddings
-    chunk_embeddings = model.encode(texts, convert_to_tensor=True)
+    # Skapa embedding för frågan
     question_embedding = model.encode(question, convert_to_tensor=True)
 
     # Beräkna likheten mellan fråga och varje chunk
