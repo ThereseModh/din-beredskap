@@ -4,3 +4,4 @@ sentence-transformers==4.1.0
 torch==2.7.0
 huggingface-hub==0.32.3
 tokenizers==0.21.1
+pandas==2.2.3

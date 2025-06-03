@@ -1,0 +1,6 @@
+id,namn,adress,ort,lat,long,kapacitet,yta_kvm,status,tillträde
+1,Skyddsrum Centrum,Skolgatan 12,Göteborg,57.7089,11.9746,100,80,I drift,Allmänt
+2,Skyddsrum Majorna,Karl Johansgatan 3,Göteborg,57.6942,11.9351,80,65,I drift,Allmänt
+3,Skyddsrum Norrby,Fabriksgatan 5,Borås,57.721,12.9401,60,50,I drift,Allmänt
+4,Skyddsrum Backaplan,Backavägen 10,Göteborg,57.7263,11.9484,120,90,I drift,Allmänt
+5,Skyddsrum Kungsporten,Norra Hamngatan 1,Göteborg,57.7075,11.9691,150,110,I drift,Allmänt
