@@ -1,33 +1,45 @@
 import pickle
+from pathlib import Path
 from sentence_transformers import SentenceTransformer, util
+import torch
 
-with open("data/chunk_embeddings.pkl", "rb") as f:
-    chunks, chunk_embeddings = pickle.load(f)
+# Sökväg till embeddingsfil
+EMBEDDING_FILE = Path("data/chunk_embeddings.pkl")
 
-# Ladda modellen en gång vid uppstart
+# Ladda chunks och deras embeddings
+try:
+    with EMBEDDING_FILE.open("rb") as f:
+        chunks, chunk_embeddings = pickle.load(f)
+except FileNotFoundError:
+    raise RuntimeError(f"Filen {EMBEDDING_FILE} hittades inte.")
+except Exception as e:
+    raise RuntimeError(f"Misslyckades att läsa embeddings: {e}")
+
+# Ladda modellen
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 def retrieve_context(question: str, top_n: int = 3) -> str:
     """
-    Hittar de mest relevanta textavsnitten (chunks) för en given fråga baserat på semantisk likhet.
+    Returnerar de mest relevanta textavsnitten för en given fråga baserat på semantisk likhet.
 
-    :param question: Frågan från användaren
-    :param chunks: Lista med dicts som har "content" och "source"
-    :param top_n: Antal mest relevanta chunks att hämta
-    :return: En sträng med de mest relevanta textavsnitten och deras källor
+    :param question: Användarens fråga
+    :param top_n: Antal textavsnitt att returnera
+    :return: Sträng med sammanfogade textavsnitt och källor
     """
+    if not chunks or not chunk_embeddings.any():
+        return "Inga chunks är tillgängliga för sökning."
 
     # Skapa embedding för frågan
     question_embedding = model.encode(question, convert_to_tensor=True)
 
-    # Beräkna likheten mellan fråga och varje chunk
+    # Beräkna likheten mellan frågan och alla chunks
     cosine_scores = util.cos_sim(question_embedding, chunk_embeddings)[0]
 
-    # Hämta index för de mest relevanta chunksen
-    top_indices = cosine_scores.argsort(descending=True)[:top_n]
+    # Hämta index på toppmatchningar
+    top_indices = torch.topk(cosine_scores, k=top_n).indices
 
-    # Kombinera text + källa
+    # Sätt ihop resultat
     selected_chunks = [
         f"{chunks[i]['content']}\nKälla: {chunks[i]['source']}" for i in top_indices
     ]

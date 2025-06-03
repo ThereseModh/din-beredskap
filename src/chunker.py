@@ -1,7 +1,17 @@
 from pathlib import Path
 
 
-def split_into_chunks(text, max_length=500, overlap=100):
+def split_into_chunks(
+    text: str, max_length: int = 500, overlap: int = 100
+) -> list[str]:
+    """
+    Delar upp en lång text i överlappande mindre textbitar (chunks).
+
+    :param text: Originaltexten som ska delas.
+    :param max_length: Maxlängd per chunk.
+    :param overlap: Antal tecken som överlappar mellan två chunks.
+    :return: En lista med textchunks.
+    """
     chunks = []
     start = 0
     while start < len(text):
@@ -11,7 +21,13 @@ def split_into_chunks(text, max_length=500, overlap=100):
     return chunks
 
 
-def load_and_chunk_documents(data_dir="data"):
+def load_and_chunk_documents(data_dir: str = "data") -> list[dict]:
+    """
+    Läser alla .txt-filer i en mappstruktur, delar dem i chunks och lägger till källinformation.
+
+    :param data_dir: Sökväg till huvudmappen med underkataloger innehållande .txt-filer.
+    :return: En lista med dictar innehållande 'source' och 'content'.
+    """
     base_path = Path(data_dir)
     all_chunks = []
 
@@ -22,9 +38,12 @@ def load_and_chunk_documents(data_dir="data"):
                 try:
                     text = file.read_text(encoding="utf-8")
                     chunks = split_into_chunks(text)
-                    for chunk in chunks:
-                        all_chunks.append({"source": source_name, "content": chunk})
+                    all_chunks.extend(
+                        {"source": source_name, "content": chunk} for chunk in chunks
+                    )
                 except UnicodeDecodeError as e:
-                    print(f"Could not read {file}: {e}")
+                    print(f"Kunde inte läsa {file}: {e}")
+                except Exception as e:
+                    print(f"Oväsentligt fel vid läsning av {file}: {e}")
 
     return all_chunks

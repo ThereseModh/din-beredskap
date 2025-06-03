@@ -3,10 +3,18 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+api_key = os.getenv("OPENAI_API_KEY")
+
+if not api_key:
+    raise ValueError("OPENAI_APIKEY saknas i .env-filen")
+
+client = OpenAI(api_key=api_key)
 
 
 def generate_answer(question: str, context: str) -> str:
+    """
+    Skickar anvädarens fråga + kontext till OpenAI och returnerar ett svar
+    """
     prompt = f"""
 Du är en hjälpsam och tydlig beredskapsrådgivare som hjälper människor att förbereda sig för samhällskriser och akuta situationer. 
 Besvara frågan nedan utifrån följande informationskällor (t.ex. MSB, Röda Korset, Civilförsvarsförbundet, Livsmedelsverket).
@@ -22,12 +30,17 @@ Fakta att använda:
 {context}
 
 Fråga: {question}
-Svar:"""
+Svar:
+""".strip()
 
-    response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.5,
-        max_tokens=800,
-    )
-    return response.choices[0].message.content.strip()
+    try:
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.5,
+            max_tokens=800,
+        )
+        return response.choices[0].message.content.strip()
+
+    except Exception as e:
+        return f"Ett fel uppstod vid generering av svar: {e}"
