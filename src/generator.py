@@ -13,7 +13,8 @@ client = OpenAI(api_key=api_key)
 
 def generate_answer(question: str, context: str) -> str:
     """
-    Skickar anvädarens fråga + kontext till OpenAI och returnerar ett svar
+    Skickar anvädarens fråga + kontext till OpenAI och returnerar ett svar.
+    Kontexten kan innehålla både information från dokumenten och personens beredskapsprofil.
     """
     prompt = f"""
 Du är en hjälpsam och tydlig beredskapsrådgivare som hjälper människor att förbereda sig för samhällskriser och akuta situationer. 
