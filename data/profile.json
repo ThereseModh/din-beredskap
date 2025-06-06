@@ -1,0 +1,7 @@
+{
+  "household_size": 3,
+  "housing_type": "hus",
+  "has_pets": true,
+  "electricity_dependent": false,
+  "location": "Färgelanda"
+}
