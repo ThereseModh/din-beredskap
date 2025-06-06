@@ -1,7 +1,12 @@
 {
-  "household_size": 3,
-  "housing_type": "hus",
+  "household_size": 2,
+  "num_children": 0,
+  "housing_type": "Hus",
+  "area_type": "Tätort",
+  "has_car": false,
   "has_pets": true,
+  "has_private_well": false,
+  "has_wood_heating": false,
   "electricity_dependent": false,
-  "location": "Färgelanda"
+  "location": ""
 }
