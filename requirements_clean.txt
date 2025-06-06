@@ -5,3 +5,4 @@ torch==2.7.0
 huggingface-hub==0.32.3
 tokenizers==0.21.1
 pandas==2.2.3
+streamlit==1.45.1
