@@ -1,6 +1,13 @@
 # Streamlit konfiguration för att undvika konflikt med PyTorch
-# "fileWatcherType = none" löser fel som orsakas av torch.classes i vissa miljöer
-# t.ex. "RuntimeError: Tried to instantiate class __path__"
 [server]
 runOnSave = false
 fileWatcherType = "none"
+
+# Tema för Din Beredskap
+[theme]
+base = "light"
+primaryColor = "#2F73B5"
+backgroundColor = "#F9FBFD"
+secondaryBackgroundColor = "#F7F9FB"
+textColor = "#1A2E445"
+font = "sans serif"

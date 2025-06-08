@@ -1,12 +1,12 @@
 {
-  "household_size": 2,
-  "num_children": 0,
+  "household_size": 3,
+  "num_children": 1,
   "housing_type": "Hus",
-  "area_type": "Tätort",
-  "has_car": false,
+  "area_type": "Landsbygd",
+  "has_car": true,
   "has_pets": true,
-  "has_private_well": false,
-  "has_wood_heating": false,
+  "has_private_well": true,
+  "has_wood_heating": true,
   "electricity_dependent": false,
-  "location": ""
+  "location": "Färgelanda"
 }

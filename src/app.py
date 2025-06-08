@@ -10,7 +10,9 @@ from profile_handler import (
 
 def main():
     try:
-        print("Välkommen till Din Beredskap – AI-assistent för krisberedskap!\n")
+        print(
+            "Välkommen till Din Beredskap – AI-assistent för hemberedskap och krishantering!\n"
+        )
 
         shelter_df = load_shelters()
 
