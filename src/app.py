@@ -7,7 +7,8 @@ from profile_handler import (
 )
 
 
-# Återanvändbar formattering av profilen
+# Återanvändbar formattering av profilen till läsbar textsträng
+# som kan bifogas i prompten till AI:n
 def format_profile(profile: dict) -> str:
     if not profile:
         return ""
@@ -26,7 +27,8 @@ def format_profile(profile: dict) -> str:
     )
 
 
-# Hantera fritt ställd fråga
+# Hanterar fritt ställd fråga från användaren
+# Laddar användarens profil, hämtar kontext och skickar till AI:n
 def handle_own_question(profile):
     question = input("\nVad vill du fråga AI:n? ").strip()
     if not question:
@@ -42,6 +44,8 @@ def handle_own_question(profile):
     print(answer)
 
 
+# Hanterar fördefinierade krisscenarier som användaren kan välja mellan
+# Visar meny, skickar scenario som fråga till AI:n
 def scenarios(scenario: str, profile: dict):
     profile_context = get_current_profile(profile) if profile else ""
     context = retrieve_context(scenario)
@@ -87,6 +91,8 @@ def handle_scenarios(profile):
             print("Ogiltigt val. Försök igen.")
 
 
+# Huvudfunktion som kör hela terminalapplikationen
+# Visar meny, hanterar val och anropar rätt funktion
 def main():
     try:
         print(
