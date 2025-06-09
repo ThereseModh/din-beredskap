@@ -16,3 +16,5 @@ scripts/write_clean_requirements.py
 src/shelters.py
 src/test_chunking.py
 src/requirements_clean.py
+src/streamlit_app.py
+src/style.css
