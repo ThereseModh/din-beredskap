@@ -7,10 +7,10 @@ def split_into_chunks(
     """
     Delar upp en lång text i överlappande mindre textbitar (chunks).
 
-    :param text: Originaltexten som ska delas.
+    :param text: Originaltexten som ska delas upp.
     :param max_length: Maxlängd per chunk.
     :param overlap: Antal tecken som överlappar mellan två chunks.
-    :return: En lista med textchunks.
+    :return: En lista med överlappande textchunks.
     """
     chunks = []
     start = 0
@@ -25,7 +25,7 @@ def load_and_chunk_documents(data_dir: str = "data") -> list[dict]:
     """
     Läser alla .txt-filer i en mappstruktur, delar dem i chunks och lägger till källinformation.
 
-    :param data_dir: Sökväg till huvudmappen med underkataloger innehållande .txt-filer.
+    :parameter data_dir: Sökväg till huvudmappen med underkataloger innehållande .txt-filer.
     :return: En lista med dictar innehållande 'source' och 'content'.
     """
     base_path = Path(data_dir)

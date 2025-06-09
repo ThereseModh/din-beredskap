@@ -6,7 +6,7 @@ import torch
 # Sökväg till embeddingsfil
 EMBEDDING_FILE = Path("data/chunk_embeddings.pkl")
 
-# Ladda chunks och deras embeddings
+# Laddar chunks och deras embeddings
 try:
     with EMBEDDING_FILE.open("rb") as f:
         chunks, chunk_embeddings = pickle.load(f)
@@ -15,7 +15,7 @@ except FileNotFoundError:
 except Exception as e:
     raise RuntimeError(f"Misslyckades att läsa embeddings: {e}")
 
-# Ladda modellen
+# Laddar modellen
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
@@ -30,13 +30,13 @@ def retrieve_context(question: str, top_n: int = 6) -> str:
     if not chunks or not chunk_embeddings.any():
         return "Inga chunks är tillgängliga för sökning."
 
-    # Skapa embedding för frågan
+    # Skapar embedding för frågan
     question_embedding = model.encode(question, convert_to_tensor=True)
 
-    # Beräkna likheten mellan frågan och alla chunks
+    # Beräknar likheten mellan frågan och alla chunks
     cosine_scores = util.cos_sim(question_embedding, chunk_embeddings)[0]
 
-    # Hämta index på toppmatchningar
+    # Hämtar index på toppmatchningar
     top_indices = torch.topk(cosine_scores, k=top_n).indices
 
     # Sätt ihop resultat

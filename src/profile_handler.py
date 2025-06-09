@@ -1,23 +1,27 @@
 import json
 from pathlib import Path
 
+# Sökvägen till profilfilen (json) som innehåller hushållets beredskapsinformation
 PROFILE_PATH = Path("data/profile.json")
 
 
 def create_or_update_profile():
+    # Om en tidigare profil finns, ladda den och visa innehållet
     if PROFILE_PATH.exists():
         with PROFILE_PATH.open("r", encoding="utf-8") as f:
             profile = json.load(f)
         print("\nEn tidigare profil hittades:")
         for key, value in profile.items():
             print(f"- {key.capitalize()}: {value}")
+        # Fråga användaren om de vill uppdatera profilen
         update = input("\nVill du uppdatera profilen? (j/n): ").strip().lower()
         if update != "j":
-            return profile
+            return profile  # Returnerar tidigare profil utan ändringar
 
     print("\nSkapa din personliga beredskapsprofil:")
 
     try:
+        # Samlar in profiluppgifter från användaren
         household_size = int(input("Hur många personer finns i hushållet? ").strip())
         num_children = int(input("Hur många av dessa är barn? ").strip())
         housing_type = input("Bor du i hus eller lägenhet? ").strip().capitalize()
@@ -36,6 +40,7 @@ def create_or_update_profile():
         )
         location = input("Ange din ort (frivilligt): ").strip()
 
+        # Skapar profil-dictionary baserat på inmatningen
         profile = {
             "household_size": household_size,
             "num_children": num_children,
@@ -49,6 +54,7 @@ def create_or_update_profile():
             "location": location,
         }
 
+        # Skapar katalogen om den inte redan finns och spara profilen till fil
         PROFILE_PATH.parent.mkdir(parents=True, exist_ok=True)
         with PROFILE_PATH.open("w", encoding="utf-8") as f:
             json.dump(profile, f, indent=2, ensure_ascii=False)
@@ -57,11 +63,16 @@ def create_or_update_profile():
         return profile
 
     except Exception as e:
+        # Hanterar eventuella fel som uppstår under inmatning eller sparning
         print(f"Ett fel uppstod: {e}")
         return {}
 
 
 def load_profile():
+    """
+    Läser in och returnerar användarens profil från fil om den finns.
+    """
+
     if PROFILE_PATH.exists():
         with PROFILE_PATH.open("r", encoding="utf-8") as f:
             return json.load(f)
@@ -69,14 +80,22 @@ def load_profile():
 
 
 def get_current_profile():
+    """
+    Returnerar den aktuella profilen om den finns, annars en tom dict.
+    """
     return load_profile() or {}
 
 
 def print_profile(profile: dict):
+    """
+    Skriver ut profilens innehåll på ett läsbart sätt.
+    :param profile: En dictionary med användarens profil.
+    """
     if not profile:
         print("\nIngen profil hittades.\n")
         return
 
+    # Skriver ut varje profilattribut i en tydlig lista
     print("\nDin beredskapsprofil:\n")
     print(f"- Hushåll: {profile.get('household_size')} personer")
     print(f"- Varav barn: {profile.get('num_children')} st")
