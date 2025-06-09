@@ -1,6 +1,5 @@
 from retriever import retrieve_context
 from generator import generate_answer
-from shelters import load_shelters, search_shelters_by_city, add_custom_shelter
 from profile_handler import (
     create_or_update_profile,
     print_profile,
@@ -14,18 +13,14 @@ def main():
             "Välkommen till Din Beredskap – AI-assistent för hemberedskap och krishantering!\n"
         )
 
-        shelter_df = load_shelters()
-
         while True:
             print("\nVad vill du göra?")
             print("1. Ställ en beredskapsfråga till AI:n")
-            print("2. Sök skyddsrum på ort")
-            print("3. Lägg till eget skyddsrum")
-            print("4. Skapa eller uppdatera beredskapsprofil")
-            print("5. Visa profil")
-            print("6. Avsluta")
+            print("2. Skapa eller uppdatera beredskapsprofil")
+            print("3. Visa profil")
+            print("4. Avsluta")
 
-            choice = input("Välj (1/2/3/4/5/6): ").strip()
+            choice = input("Välj (1/2/3/4): ").strip()
 
             if choice == "1":
                 profile = get_current_profile()
@@ -57,22 +52,13 @@ def main():
                 print(answer)
 
             elif choice == "2":
-                location = input("Ange ort: ")
-                result = search_shelters_by_city(shelter_df, location)
-                print("\nSökresultat:\n")
-                print(result)
-
-            elif choice == "3":
-                shelter_df = add_custom_shelter(shelter_df)
-
-            elif choice == "4":
                 create_or_update_profile()
 
-            elif choice == "5":
+            elif choice == "3":
                 profile = get_current_profile()
                 print_profile(profile)
 
-            elif choice == "6":
+            elif choice == "4":
                 print("Avslutar.")
                 break
 

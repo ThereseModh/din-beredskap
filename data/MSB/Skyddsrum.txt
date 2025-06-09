@@ -1,4 +1,5 @@
 Bra att veta om skyddsrum
+Du kan själv söka efter närmaste skyddsrum på MSB:s skyddsrumsportal: https://skyddsrum.msb.se
 Runt om i Sverige finns ett stort antal skyddsrum som ska skydda befolkningen vid krig. I fredstid får skyddsrummen användas till annat, men de ska kunna iordningställas inom två dygn.
 
 När ett skyddsrum är klart att användas ska det finnas vatten upptappat i kärl, värme, ventilation och toalettmöjligheter. I en krigssituation får du vara beredd på att det kan vara avbrott i exempelvis vatten-, el- och värmeförsörjningen till skyddsrummet. Mat och exempelvis hygienprodukter finns inte i skyddsrummen. Se checklistan längre ner på sidan.
@@ -31,3 +32,5 @@ Värdehandlingar (id-kort/körkort, kontanter, kontokort)
 Nycklar
 Mobiltelefon + laddare eller powerbank
 Batteri- eller vevradio
+
+

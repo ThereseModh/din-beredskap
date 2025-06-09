@@ -19,7 +19,7 @@ except Exception as e:
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
-def retrieve_context(question: str, top_n: int = 3) -> str:
+def retrieve_context(question: str, top_n: int = 6) -> str:
     """
     Returnerar de mest relevanta textavsnitten för en given fråga baserat på semantisk likhet.
 

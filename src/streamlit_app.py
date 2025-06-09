@@ -27,11 +27,15 @@ st.markdown(
 )
 
 st.markdown(
-    "<div class='subtitle'>Ställ dina frågor om krisberedskap. AI:n söker i tillförlitliga källor och ger konkreta råd baserade på din profil.</div>",
+    """
+    <div class='subtitle'>
+        Ställ frågor om krisberedskap, naturkatastrofer, skyddsrum, checklistor och mer.
+        AI:n ger konkreta råd baserade på tillförlitliga källor och din personliga beredskapsprofil.
+    </div>
+    <hr>
+    """,
     unsafe_allow_html=True,
 )
-
-st.markdown("<hr>", unsafe_allow_html=True)
 
 
 # -------- PROFILSEKTION --------
@@ -156,11 +160,11 @@ with st.expander("Redigera din beredskapsprofil"):
 # -------- FRÅGESTÄLLNING --------
 
 
-for i, (q, a) in enumerate(reversed(st.session_state.chat_history), 1):
+for i, (q, a) in enumerate(st.session_state.chat_history, 1):
     st.markdown(
         f"""
     <div class="chat-block">
-        <p><strong>Fråga {len(st.session_state.chat_history) - i + 1}:</strong> {q}</p>
+        <p><strong>Fråga {i}:</strong> {q}</p>
         <p><strong>AI:s svar:</strong></p>
         <div class="chat-answer">{a}</div>
     </div>
@@ -173,6 +177,7 @@ for i, (q, a) in enumerate(reversed(st.session_state.chat_history), 1):
 with st.form("question_form", clear_on_submit=True):
     st.markdown("<h4 class='section-title'>Ställ en fråga</h4>", unsafe_allow_html=True)
     question = st.text_area("Formulera din fråga nedan:", height=100, key="question")
+
     submitted = st.form_submit_button("Skicka")
 
 if submitted:
