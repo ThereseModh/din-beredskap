@@ -37,6 +37,7 @@ st.markdown(
 # -------- FLIKAR --------
 tabs = st.tabs(["\U0001f4ac Ställ en fråga", "\U0001f4cb Skapa/redigera profil"])
 
+
 # ======= FLIK 1: FRÅGA =======
 with tabs[0]:
     col1, col2 = st.columns([1, 2])
@@ -83,7 +84,7 @@ with tabs[0]:
         )
         with st.form("question_form", clear_on_submit=True):
             question = st.text_area("Vad vill du veta?", height=100)
-            submitted = st.form_submit_button("\U0001f4e7 Skicka fråga")
+            submitted = st.form_submit_button("Skicka fråga")
 
         if submitted and question.strip():
             profile_input = get_current_profile()
@@ -105,6 +106,46 @@ with tabs[0]:
                 answer = generate_answer(question, context + profile_context)
             st.session_state.chat_history.append((question, answer))
             st.rerun()
+
+        st.markdown(
+            "<hr style='margin-top:2.5rem;margin-bottom:1rem;'>", unsafe_allow_html=True
+        )
+
+        st.markdown(
+            "<div class='scenario-heading'>Krisscenarier</div>", unsafe_allow_html=True
+        )
+        st.markdown(
+            "<div class='scenario-subtext'>Klicka på ett scenario för att få AI-genererade, personligt anpassade råd.</div>",
+            unsafe_allow_html=True,
+        )
+
+        scenario_prompts = {
+            "🔌 Strömavbrott": "Hur förbereder jag mig för ett längre strömavbrott?",
+            "🌊 Översvämning": "Vad bör jag tänka på vid översvämning?",
+            "🔥 Brand": "Hur förbereder jag mig för en brand i hemmet?",
+            "🥫 Matbrist": "Hur kan jag förbereda mig för brist på mat?",
+            "💧 Vattenbrist": "Vad gör jag om dricksvattnet slutar fungera?",
+            "⚠️ Krigshot": "Vad behöver jag vid krigshot eller allvarlig samhällskris?",
+            "❄️ Extrem kyla": "Hur håller jag mig varm utan el under vintern?",
+            "🎒 Evakuering": "Vad bör jag packa om jag måste evakuera?",
+        }
+
+        cols = st.columns(2)
+        for i, (label, prompt) in enumerate(scenario_prompts.items()):
+            with cols[i % 2]:
+                st.markdown('<div class="scenario-button">', unsafe_allow_html=True)
+                if st.button(label, key=f"scenario_{i}"):
+                    profile_input = get_current_profile()
+                    with st.spinner("AI:n sammanställer ett svar..."):
+                        profile_context = (
+                            "Användarens beredskapsprofil:\n"
+                            + json.dumps(profile_input, indent=2, ensure_ascii=False)
+                        )
+                        context = retrieve_context(prompt)
+                        answer = generate_answer(prompt, context + profile_context)
+                    st.session_state.chat_history.append((prompt, answer))
+                    st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
 
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []

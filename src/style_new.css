@@ -32,10 +32,29 @@ main .block-container {
     padding-bottom: 0.4rem;
     font-family: 'Segoe UI', sans-serif;
 }
+.scenario-heading {
+    background-color: #e3eef9;
+    padding: 0.8rem 1.2rem;
+    border-left: 6px solid #2F73B5;
+    border-radius: 6px;
+    font-size: 19px;
+    font-weight: 600;
+    font-family: 'Segoe UI', sans-serif;
+    color: #12304b;
+    margin-top: 2rem;
+    margin-bottom: 0.3rem;
+}
+.scenario-subtext {
+    color: #444;
+    font-size: 15px;
+    font-family: 'Segoe UI', sans-serif;
+    margin-bottom: 1rem;
+    margin-left: 4px;
+}
 
 /* === KNAPPAR === */
 .stButton > button {
-    background-color: #2F73B5;
+    background-color: #235f9b;
     color: white;
     padding: 0.7em 1.4em;
     border-radius: 8px;
@@ -49,6 +68,28 @@ main .block-container {
     transform: translateY(-1px);
     transition: all 0.15s ease-in-out;
     color: white;
+}
+/* ====== Scenario-knappar ====== */
+.scenario-button button {
+    background-color: #184059;
+    color: white;
+    font-weight: 600;
+    padding: 0.6rem 1.2rem;
+    border-radius: 8px;
+    font-size: 16px;
+    border: none;
+    margin-bottom: 0.5rem;
+    width: 100%;
+}
+
+.scenario-button button:hover {
+    background-color:  #12304b;
+    transition: background-color 0.2s ease;
+}
+
+.scenario-button button:active {
+    background-color: #0f263a;           /* Tryckt läge */
+    color: white;                        /* Viktigt: behåll vit text även när den trycks */
 }
 
 /* === EXPANDER === */
