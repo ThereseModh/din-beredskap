@@ -4,3 +4,15 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .env
+
+data/skyddsrum.csv
+data/testfil.txt
+
+scripts/check_unused_requirements.py
+scripts/convert_to_utf8.py
+scripts/fix_encoding.py
+scripts/write_clean_requirements.py
+
+src/shelters.py
+src/test_chunking.py
+src/requirements_clean.py
