@@ -5,11 +5,11 @@ from profile_handler import get_current_profile
 import json
 from pathlib import Path
 
-# -------- TEMA & LAYOUT --------
+# Konfigurerar sidlayout och titel
 st.set_page_config(page_title="Din Beredskap", layout="wide")
 
 
-# -------- GLOBAL CSS --------
+# Laddar in anpassad CSS
 def load_css(filename):
     css_path = Path(__file__).parent / filename
     with open(css_path, encoding="utf-8") as f:
@@ -17,7 +17,8 @@ def load_css(filename):
 
 
 load_css("style_new.css")
-# -------- RUBRIK --------
+
+# Sidhuvud och introduktion
 st.markdown(
     """
 <div style='background-color:#184059;padding:1.5rem 1rem;border-radius:10px;margin-bottom:2rem;'>
@@ -34,14 +35,15 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# -------- FLIKAR --------
+# Skapar flikar: Fråga och Profil
 tabs = st.tabs(["\U0001f4ac Ställ en fråga", "\U0001f4cb Skapa/redigera profil"])
 
 
-# ======= FLIK 1: FRÅGA =======
+# Flik 1: Frågeformulär och AI-svar
 with tabs[0]:
     col1, col2 = st.columns([1, 2])
 
+    # Visa användarens profil i vänsterkolumn
     with col1:
         with st.expander("\U0001f464 Visa din beredskapsprofil"):
             profile_view = get_current_profile()
@@ -77,6 +79,7 @@ with tabs[0]:
             else:
                 st.info("Ingen profil hittades. Du kan skapa en under fliken 'Profil'.")
 
+    # Formulär för att ställa frågor
     with col2:
         st.markdown(
             "<h4 class='section-title'>Ställ en fråga till AI:n</h4>",
@@ -107,6 +110,7 @@ with tabs[0]:
             st.session_state.chat_history.append((question, answer))
             st.rerun()
 
+        # Visa snabbval för scenarier
         st.markdown(
             "<hr style='margin-top:2.5rem;margin-bottom:1rem;'>", unsafe_allow_html=True
         )
@@ -147,6 +151,7 @@ with tabs[0]:
                     st.rerun()
                 st.markdown("</div>", unsafe_allow_html=True)
 
+    # Visa historik av frågor och svar
     if "chat_history" not in st.session_state:
         st.session_state.chat_history = []
 
@@ -168,7 +173,7 @@ with tabs[0]:
             )
 
 
-# ======= FLIK 2: PROFIL =======
+# Flik 2: Redigera profil
 with tabs[1]:
     PROFILE_PATH = Path("data/profile.json")
     st.markdown(
@@ -178,6 +183,7 @@ with tabs[1]:
     profile_form = get_current_profile()
 
     with st.form("profile_form"):
+        # Formulärfält för varje profiluppgift
         household_size = st.number_input(
             "Hur många personer finns i hushållet?",
             min_value=1,
@@ -245,6 +251,7 @@ with tabs[1]:
             "Ange din ort (frivilligt):", value=profile_form.get("location", "")
         )
 
+        # När användaren sparar formuläret
         if st.form_submit_button("Spara profil"):
             new_profile = {
                 "household_size": household_size,
