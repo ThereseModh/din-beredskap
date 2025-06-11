@@ -1,97 +1,96 @@
-# Din Beredskap – AI assistent för hemberedskap och krishantering
+# Din Beredskap – AI-baserad rådgivare för hemberedskap och krishantering
 
-Ett AI-projekt som hjälper människor att få svar på frågor kring samhällskriser, personlig beredskap och akuta situationer. Svaren baseras på officiella informationskällor som MSB, Röda Korset, Civilförsvarsförbundet och Livsmedelsverket.
+**Din Beredskap** är en AI-assistent som hjälper användare att få konkreta råd vid samhällskriser, personligt beredskap och akuta situationer. Svaren anpassas efter användarens hushållsprofil och baseras på tillförlitlig information från svenska myndigheter och organisationer.
+
+Projektet använder RAG (Retrieval-Augmented Generation), där relevanta textavsnitt hämtas från dokument och används som kontext för att generera AI-svar via OpenAI:s API.
 
 ---
 
 ## Funktioner
 
-- Läser in källmaterial från `.txt`-filer
-- Delar upp materialet i mindre textavsnitt (chunks)
-- Skapar semantiska embeddings med `sentence-transformers`
-- Söker fram relevanta textstycken baserat på användarens fråga
-- Skickar fråga + relevant information till OpenAI\:s API
-- Visar AI-genererat svar i terminalen med källhänvisning
+- Kontextuell retrieval med TF-IDF
+- Svar baserade på svenska krisinformationskällor
+- Anpassade svar utifrån hushållets storlek, boendeform, barn etc.
+- Användaren kan se och redigera sin beredskapsprofil
+- Scenariobaserade frågor (t.ex. elavbrott, matbrist, brand)
+- Enkelt och tydligt gränssnitt med Streamlit
 
 ---
 
-## Installation
+## ⚙️ Så här kör du projektet
 
-1. Klona projektet:
+1. **Installera beroenden**
 
-```bash
-git clone https://github.com/ditt-anvandarnamn/din-beredskap.git
-cd din-beredskap
-```
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-2. Skapa och aktivera en virtuell miljö (valfritt):
+2. **Lägg till din OpenAI-nyckel**
 
-```bash
-python -m venv venv
-source venv/bin/activate      # macOS/Linux
-venv\Scripts\activate         # Windows
-```
+   Skapa en `.env`-fil i projektroten med innehållet:
 
-3. Installera beroenden:
+   ```env
+   OPENAI_API_KEY=din-nyckel-här
+   ```
 
-```bash
-pip install -r requirements_clean.txt
-```
+3. **Starta appen**
+
+   ```bash
+   streamlit run src/app.py
+   ```
 
 ---
 
-## Mappstruktur
+## 📁 Projektstruktur
 
 ```
 data/
-├── MSB/
-├── Livsmedelsverket/
-├── chunks.json                 ← genereras från .txt-filer
-└── chunk_embeddings.pkl        ← genereras från chunks.json
-
-src/
-├── app.py                      ← frågegränssnitt (terminal)
-├── retriever.py                ← hämtar relevant information
-├── generator.py                ← skickar fråga till OpenAI
-└── chunker.py                  ← delar upp textfiler
+├── chunks.json
+├── chunk_embeddings.pkl
+├── profile.json
+├── MSB/, Röda korset/, ...
 
 scripts/
-├── create_chunks_json.py       ← bygger chunks.json
-└── precompute_embeddings.py    ← bygger chunk_embeddings.pkl
+├── create_chunks_json.py
+└── precompute_embeddings.py
+
+src/
+├── app.py
+├── chunker.py
+├── generator.py
+├── profile_handler.py
+├── retriever.py
+├── streamlit_new.py
+└── style_new.css
+
+README.md
+requirements.txt
+.env
 ```
 
 ---
 
-## Så här använder du projektet
+## 📚 Informationskällor
 
-```bash
-python src/app.py
-```
-
-Exempel:
-
-```
-Ställ en beredskapsfråga: Hur mycket vatten behöver jag spara vid kris?
-
-AI:s svar:
-Vid en kris behöver en vuxen person vanligtvis tre till fem liter vatten per dag...
-Källa: MSB, Civilförsvarsförbundet
-```
+- MSB – Myndigheten för samhällsskydd och beredskap
+- Krisinformation.se
+- Röda Korset
+- Livsmedelsverket
+- Civilförsvarsförbundet
 
 ---
 
-## Kommande utveckling
+## 🔍 Förslag på vidareutveckling
 
-- Webbaserat gränssnitt med Streamlit
-- Stöd för PDF-tolkning av broschyrer
-- Scenario-simulator och personlig beredskapsprofil
-- Offline/PWA-version
+- Bättre retrieval (FAISS, Chroma)
+- DSPy för utvärdering och prompt-tuning
+- Fler krisscenarier
+- Export av profil och frågor/svar
+- UI med betygssättning av svar
+- Offline-läge med lokal profil och cache av scenariodata för mobilanvändning (PWA eller native wrapper)
 
 ---
 
-## Använd teknik
+## 🧾 Om projektet
 
-- Python 3.10+
-- sentence-transformers (all-MiniLM-L6-v2)
-- OpenAI GPT-3.5 Turbo
-- Embedding-baserad informationssökning
+Detta projekt är en MVP skapad inom kursen "Applicerad AI", för att visa hur LLM-teknik kan användas praktiskt inom krisberedskap.
