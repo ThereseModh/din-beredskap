@@ -1,154 +1,122 @@
-/* === Global layout för sidans huvudbehållare === */
-main .block-container {
-    max-width: 1100px;
-    padding: 2rem 3rem;
-    background-color: #f8f9fa;
+/* === Rubriksektion med bakgrund === */
+header {
+    background-color: #184059;
+    padding: 2rem 1rem;
     border-radius: 12px;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    margin-bottom: 2rem;
+    color: white;
+}
+header h1 {
+    font-size: 40px;
+    margin-bottom: 0.2em;
+}
+header p {
+    color: #cfd6df;
+    font-size: 15.5px;
+    max-width: 700px;
+    margin: 0 auto;
 }
 
-/* === Rubrikstilar (titel, underrubrik, avsnittsrubriker) === */
+/* === HUVUDBEHÅLLARE === */
+main .block-container {
+    max-width: 1100px;
+    padding: 2rem 2.5rem;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+/* === RUBRIKER === */
 .title {
-    color: #184059;
-    font-size: 40px;
+    color: #0f3d57;
+    font-size: 42px;
     font-weight: 700;
-    font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     text-align: center;
-    margin-bottom: 0.3em;
 }
 .subtitle {
-    color: #ddd;
+    color: #888;
     font-size: 18px;
-    font-family: 'Segoe UI', sans-serif;
     text-align: center;
     margin-bottom: 1.5em;
 }
+
+/* === AVSNITTSTITLAR === */
 .section-title {
-    color: #184059;
+    color: #0f3d57;
     font-size: 22px;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+    font-weight: 600;
     border-bottom: 2px solid #d6d6d6;
     padding-bottom: 0.4rem;
+    margin: 2rem 0 1rem;
     font-family: 'Segoe UI', sans-serif;
 }
+
+/* === SCENARION === */
 .scenario-heading {
-    background-color: #e3eef9;
-    padding: 0.8rem 1.2rem;
-    border-left: 6px solid #2F73B5;
-    border-radius: 6px;
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 600;
-    font-family: 'Segoe UI', sans-serif;
-    color: #12304b;
-    margin-top: 2rem;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem;
+    color: #13364d;
 }
 .scenario-subtext {
-    color: #444;
+    color: #4a4a4a;
     font-size: 15px;
-    font-family: 'Segoe UI', sans-serif;
-    margin-bottom: 1rem;
-    margin-left: 4px;
+    margin-bottom: 1.2rem;
 }
 
-/* === Generell stil för Streamlit-knappar === */
-.stButton > button {
-    background-color: #235f9b;
-    color: white;
-    padding: 0.7em 1.4em;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: 600;
-    font-family: 'Segoe UI', sans-serif;
+/* === MENYKNAPPAR === */
+.menu-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
 }
 
-.stButton > button:hover {
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
-    transform: translateY(-1px);
-    transition: all 0.15s ease-in-out;
-    color: white;
-}
-
-/* === Specifik stil för scenarioknappar === */
-.scenario-button button {
+.menu-buttons .stButton > button {
     background-color: #184059;
     color: white;
     font-weight: 600;
-    padding: 0.6rem 1.2rem;
+    padding: 0.75rem 1.8rem;
     border-radius: 8px;
     font-size: 16px;
     border: none;
-    margin-bottom: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.menu-buttons .stButton > button:hover {
+    background-color: #12304b;
+    transform: translateY(-1px);
+}
+
+
+/* === SCENARIO-KNAPPAR (förbättrad stil) === */
+.scenario-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    padding-top: 0.5rem;
+    padding-bottom: 2rem;
+}
+
+.scenario-button button {
+    background: linear-gradient(135deg, #1c6ca1, #23527c);
+    color: white;
+    font-weight: 600;
+    padding: 0.65rem 1.2rem;
+    border-radius: 10px;
+    font-size: 15.5px;
+    border: none;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
     width: 100%;
+    transition: all 0.2s ease;
 }
 .scenario-button button:hover {
-    background-color:  #12304b;
-    transition: background-color 0.2s ease;
+    background: linear-gradient(135deg, #184c75, #153f5d);
+    transform: translateY(-1px);
 }
 .scenario-button button:active {
-    background-color: #0f263a;            /* Visuell effekt när knappen är nedtryckt */
-    color: white;                       /* Viktigt: behåll vit text även vid klick */
-}
-
-/* === Expander-komponent (profilvisning m.m.) === */
-.streamlit-expanderHeader {
-    color: #184059;
-    font-weight: 600;
-    font-size: 17px;
-    font-family: 'Segoe UI', sans-serif;
-}
-.stExpander {
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fefefe;
-}
-
-/* === Chatblock för AI-svar och användarfrågor === */
-.chat-block {
-    padding: 1rem 1.2rem;
-    background-color: #e7f1fa;
-    border-left: 5px solid #184059;
-    border-radius: 6px;
-    margin-bottom: 0.5rem;
-    font-family: 'Segoe UI', sans-serif;
-}
-.chat-answer {
-    margin-top: 0.6rem;
-    white-space: pre-wrap;
-    line-height: 1.2;
-    color: #222;
-    font-size: 15.5px;
-}
-
-/* === Stil för profilrader (i expander eller flöde) === */
-.profilrad p {
-    margin: 0.4em 0;
-    font-size: 15.5px;
-    font-family: 'Segoe UI', sans-serif;
-}
-
-/* === Inmatningsfält: text, nummer, textarea === */
-.stTextInput > div > input,
-.stNumberInput > div > input,
-textarea {
-    font-family: 'Segoe UI', sans-serif;
-    font-size: 15px;
-    border-radius: 6px;
-}
-textarea:focus {
-    border: 2px solid #2F73B5;
-    box-shadow: 0 0 0 1px #2F73B5;
-    outline: none;
-}
-textarea:hover {
-    border: 1px solid #2F73B5;
-}
-
-/* === Stil för radio-knappar och checkboxar === */
-.stRadio label,
-.stCheckbox label {
-    color: #222;
-    font-weight: 500;
-    font-family: 'Segoe UI', sans-serif;
+    background: #0f263a;
 }

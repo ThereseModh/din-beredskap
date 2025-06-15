@@ -8,174 +8,177 @@ from pathlib import Path
 # Konfigurerar sidlayout och titel
 st.set_page_config(page_title="Din Beredskap", layout="wide")
 
-
 # Laddar in anpassad CSS
-def load_css(filename):
-    css_path = Path(__file__).parent / filename
-    with open(css_path, encoding="utf-8") as f:
-        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+with open("src/style.css") as f:
+    st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-
-load_css("style_new.css")
+# Initiera visningsläge
+if "view" not in st.session_state:
+    st.session_state.view = "question"
+if "chat_history" not in st.session_state:
+    st.session_state.chat_history = []
 
 # Sidhuvud och introduktion
 st.markdown(
     """
-<div style='background-color:#184059;padding:1.5rem 1rem;border-radius:10px;margin-bottom:2rem;'>
-    <h1 style='color:#fff;text-align:center;margin-bottom:0.2em;'>Din Beredskap 🧰</h1>
-    <p style='color:#ddd;text-align:center;font-size:17px;'>
+<div style='background-color:#0B3C5D;padding:2.5rem 1rem;border-radius:18px;margin-bottom:2rem;text-align:center;'>
+    <h1 style='color:#fff;font-size:42px;font-weight:700;margin-bottom:0.3em;font-family:Segoe UI, sans-serif;'>Din Beredskap 🧰</h1>
+    <p style='color:#f0f0f0;font-size:17px;margin-bottom:0.3em;font-family:Segoe UI, sans-serif;'>
         En AI-baserad rådgivare för hemberedskap och krishantering
     </p>
-    <p style='color:#cfd6df;text-align:center;font-size:15.5px;max-width:700px;margin:auto;'>
-        Ställ frågor om krisberedskap, naturkatastrofer, skyddsrum, checklistor och mer. <br>
+    <p style='color:#cfd6df;font-size:15.5px;max-width:700px;margin:auto;font-family:Segoe UI, sans-serif;'>
+        Ställ frågor om krisberedskap, naturkatastrofer, skyddsrum, checklistor och mer.<br>
         AI:n ger konkreta råd baserade på tillförlitliga källor och din personliga beredskapsprofil.
     </p>
 </div>
-""",
+    """,
     unsafe_allow_html=True,
 )
 
-# Skapar flikar: Fråga och Profil
-tabs = st.tabs(["\U0001f4ac Ställ en fråga", "\U0001f4cb Skapa/redigera profil"])
+st.markdown("<div class='menu-buttons'>", unsafe_allow_html=True)
+# Skapar en ensam kolumn för att centrera knappen horisontellt
+(col1,) = st.columns([1])
+
+with col1:
+    if st.button("🛠️ Skapa/Redigera profil"):
+        st.session_state.view = "profile"
 
 
-# Flik 1: Frågeformulär och AI-svar
-with tabs[0]:
+st.markdown("</div>", unsafe_allow_html=True)
+
+# === HUVUDVY: Användaren kan ställa en fråga till AI:n och se scenarier ===
+if st.session_state.view == "question":
     col1, col2 = st.columns([1, 2])
 
-    # Visa användarens profil i vänsterkolumn
     with col1:
-        with st.expander("\U0001f464 Visa din beredskapsprofil"):
-            profile_view = get_current_profile()
-            if profile_view:
+        with st.expander("\U0001f464 Din beredskapsprofil"):
+            profile = get_current_profile()
+            if profile:
                 st.markdown(
                     """
-                <div class="profilrad">
-                    <p><strong>Hushåll:</strong> {} personer</p>
-                    <p><strong>Barn:</strong> {} st</p>
-                    <p><strong>Boendeform:</strong> {}</p>
-                    <p><strong>Plats:</strong> {}</p>
-                    <p><strong>Bil:</strong> {}</p>
-                    <p><strong>Husdjur:</strong> {}</p>
-                    <p><strong>Brunn:</strong> {}</p>
-                    <p><strong>Ved:</strong> {}</p>
-                    <p><strong>Elberoende:</strong> {}</p>
-                    <p><strong>Ort:</strong> {}</p>
-                </div>
+                    <div class="profilrad">
+                        <p><strong>Hushåll:</strong> {} personer</p>
+                        <p><strong>Barn:</strong> {} st</p>
+                        <p><strong>Boendeform:</strong> {}</p>
+                        <p><strong>Plats:</strong> {}</p>
+                        <p><strong>Bil:</strong> {}</p>
+                        <p><strong>Husdjur:</strong> {}</p>
+                        <p><strong>Brunn:</strong> {}</p>
+                        <p><strong>Ved:</strong> {}</p>
+                        <p><strong>Elberoende:</strong> {}</p>
+                        <p><strong>Ort:</strong> {}</p>
+                    </div>
                 """.format(
-                        profile_view.get("household_size"),
-                        profile_view.get("num_children"),
-                        profile_view.get("housing_type"),
-                        profile_view.get("area_type"),
-                        "Ja" if profile_view.get("has_car") else "Nej",
-                        "Ja" if profile_view.get("has_pets") else "Nej",
-                        "Ja" if profile_view.get("has_private_well") else "Nej",
-                        "Ja" if profile_view.get("has_wood_heating") else "Nej",
-                        "Ja" if profile_view.get("electricity_dependent") else "Nej",
-                        profile_view.get("location") or "Ej angiven",
+                        profile.get("household_size"),
+                        profile.get("num_children"),
+                        profile.get("housing_type"),
+                        profile.get("area_type"),
+                        "Ja" if profile.get("has_car") else "Nej",
+                        "Ja" if profile.get("has_pets") else "Nej",
+                        "Ja" if profile.get("has_private_well") else "Nej",
+                        "Ja" if profile.get("has_wood_heating") else "Nej",
+                        "Ja" if profile.get("electricity_dependent") else "Nej",
+                        profile.get("location") or "Ej angiven",
                     ),
                     unsafe_allow_html=True,
                 )
             else:
-                st.info("Ingen profil hittades. Du kan skapa en under fliken 'Profil'.")
+                st.info("Ingen profil hittades. Gå till Redigera profil.")
 
-    # Formulär för att ställa frågor
     with col2:
         st.markdown(
-            "<h4 class='section-title'>Ställ en fråga till AI:n</h4>",
-            unsafe_allow_html=True,
+            "<div class='section-title'>Ställ din fråga</div>", unsafe_allow_html=True
         )
         with st.form("question_form", clear_on_submit=True):
             question = st.text_area("Vad vill du veta?", height=100)
             submitted = st.form_submit_button("Skicka fråga")
 
+        # Om en fråga har skickats in, generera svar baserat på användarens profil + dokumentkontekst
         if submitted and question.strip():
             profile_input = get_current_profile()
-            with st.spinner("Letar efter information..."):
-                profile_context = f"""
-                Användarens beredskapsprofil:
-                - Hushåll: {profile_input.get("household_size")} personer
-                - Barn: {profile_input.get("num_children")} st
-                - Boendeform: {profile_input.get("housing_type")}
-                - Plats: {profile_input.get("area_type")}
-                - Bil: {"Ja" if profile_input.get("has_car") else "Nej"}
-                - Husdjur: {"Ja" if profile_input.get("has_pets") else "Nej"}
-                - Brunn: {"Ja" if profile_input.get("has_private_well") else "Nej"}
-                - Ved: {"Ja" if profile_input.get("has_wood_heating") else "Nej"}
-                - Elberoende: {"Ja" if profile_input.get("electricity_dependent") else "Nej"}
-                - Ort: {profile_input.get("location") or "Ej angiven"}
-                """
+            with st.spinner("AI:n analyserar frågan..."):
+                profile_context = """Användarens profil:
+                - Hushåll: {}
+                - Barn: {}
+                - Boendeform: {}
+                - Plats: {}
+                - Bil: {}
+                - Husdjur: {}
+                - Brunn: {}
+                - Ved: {}
+                - Elberoende: {}
+                - Ort: {}""".format(
+                    profile_input.get("household_size"),
+                    profile_input.get("num_children"),
+                    profile_input.get("housing_type"),
+                    profile_input.get("area_type"),
+                    "Ja" if profile_input.get("has_car") else "Nej",
+                    "Ja" if profile_input.get("has_pets") else "Nej",
+                    "Ja" if profile_input.get("has_private_well") else "Nej",
+                    "Ja" if profile_input.get("has_wood_heating") else "Nej",
+                    "Ja" if profile_input.get("electricity_dependent") else "Nej",
+                    profile_input.get("location") or "Ej angiven",
+                )
                 context = retrieve_context(question)
                 answer = generate_answer(question, context + profile_context)
             st.session_state.chat_history.append((question, answer))
             st.rerun()
 
-        # Visa snabbval för scenarier
-        st.markdown(
-            "<hr style='margin-top:2.5rem;margin-bottom:1rem;'>", unsafe_allow_html=True
-        )
-
         st.markdown(
             "<div class='scenario-heading'>Krisscenarier</div>", unsafe_allow_html=True
         )
-        st.markdown(
-            "<div class='scenario-subtext'>Klicka på ett scenario för att få AI-genererade, personligt anpassade råd.</div>",
-            unsafe_allow_html=True,
-        )
+        st.markdown("<div class='scenario-grid'>", unsafe_allow_html=True)
 
-        scenario_prompts = {
-            "🔌 Strömavbrott": "Hur förbereder jag mig för ett längre strömavbrott?",
-            "🌊 Översvämning": "Vad bör jag tänka på vid översvämning?",
-            "🔥 Brand": "Hur förbereder jag mig för en brand i hemmet?",
-            "🥫 Matbrist": "Hur kan jag förbereda mig för brist på mat?",
-            "💧 Vattenbrist": "Vad gör jag om dricksvattnet slutar fungera?",
-            "⚠️ Krigshot": "Vad behöver jag vid krigshot eller allvarlig samhällskris?",
-            "❄️ Extrem kyla": "Hur håller jag mig varm utan el under vintern?",
-            "🎒 Evakuering": "Vad bör jag packa om jag måste evakuera?",
+        scenarios = {
+            "\U0001f50c Strömavbrott": "Hur förbereder jag mig för ett längre strömavbrott?",
+            "\U0001f30a Översvämning": "Vad bör jag tänka på vid översvämning?",
+            "\U0001f525 Brand": "Hur förbereder jag mig för en brand i hemmet?",
+            "\U0001f96b Matbrist": "Hur kan jag förbereda mig för brist på mat?",
+            "\U0001f4a7 Vattenbrist": "Vad gör jag om dricksvattnet slutar fungera?",
+            "\u26a0\ufe0f Krigshot": "Vad behöver jag vid krigshot eller allvarlig samhällskris?",
+            "\u2744\ufe0f Extrem kyla": "Hur håller jag mig varm utan el under vintern?",
+            "\U0001f392 Evakuering": "Vad bör jag packa om jag måste evakuera?",
         }
 
-        cols = st.columns(2)
-        for i, (label, prompt) in enumerate(scenario_prompts.items()):
-            with cols[i % 2]:
-                st.markdown('<div class="scenario-button">', unsafe_allow_html=True)
-                if st.button(label, key=f"scenario_{i}"):
-                    profile_input = get_current_profile()
-                    with st.spinner("AI:n sammanställer ett svar..."):
-                        profile_context = (
-                            "Användarens beredskapsprofil:\n"
-                            + json.dumps(profile_input, indent=2, ensure_ascii=False)
-                        )
-                        context = retrieve_context(prompt)
-                        answer = generate_answer(prompt, context + profile_context)
-                    st.session_state.chat_history.append((prompt, answer))
-                    st.rerun()
-                st.markdown("</div>", unsafe_allow_html=True)
+        # Skapar knappar för fördefinierade krisscenarier med automatiska frågor
+        for i, (label, prompt) in enumerate(scenarios.items()):
+            if st.button(label, key=f"scenario_{i}"):
+                profile_input = get_current_profile()
+                with st.spinner("AI:n sammanställer ett svar..."):
+                    context = retrieve_context(prompt)
+                    profile_context = json.dumps(
+                        profile_input, indent=2, ensure_ascii=False
+                    )
+                    answer = generate_answer(prompt, context + profile_context)
+                st.session_state.chat_history.append((prompt, answer))
+                st.rerun()
 
-    # Visa historik av frågor och svar
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = []
+        st.markdown("</div>", unsafe_allow_html=True)
 
     if st.session_state.chat_history:
         st.markdown(
-            "<h4 class='section-title'>Ditt frågeflöde</h4>", unsafe_allow_html=True
+            "<div class='section-title'>Frågeflöde</div>", unsafe_allow_html=True
         )
-
-        for i, (q, a) in enumerate(reversed(st.session_state.chat_history), 1):
+        for q, a in reversed(st.session_state.chat_history):
             st.markdown(
                 f"""
-            <div class="chat-block">
-                <p><strong>Du:</strong> {q}</p>
-                <p><strong>AI:</strong></p>
-                <div class="chat-answer">{a}</div>
-            </div>
-            """,
+                <div class="chat-block">
+                    <p><strong>Du:</strong> {q}</p>
+                    <div class="chat-answer">{a}</div>
+                </div>
+                """,
                 unsafe_allow_html=True,
             )
 
-
-# Flik 2: Redigera profil
-with tabs[1]:
+# === PROFILVY: Användaren kan skapa eller redigera sin beredskapsprofil ===
+elif st.session_state.view == "profile":
     PROFILE_PATH = Path("data/profile.json")
+
+    # Tillbaka-knapp
+    if st.button("🔙 Tillbaka"):
+        st.session_state.view = "question"
+        st.rerun()
+
     st.markdown(
         "<h4 class='section-title'>Redigera din beredskapsprofil</h4>",
         unsafe_allow_html=True,
@@ -183,7 +186,6 @@ with tabs[1]:
     profile_form = get_current_profile()
 
     with st.form("profile_form"):
-        # Formulärfält för varje profiluppgift
         household_size = st.number_input(
             "Hur många personer finns i hushållet?",
             min_value=1,
@@ -251,7 +253,6 @@ with tabs[1]:
             "Ange din ort (frivilligt):", value=profile_form.get("location", "")
         )
 
-        # När användaren sparar formuläret
         if st.form_submit_button("Spara profil"):
             new_profile = {
                 "household_size": household_size,
@@ -269,4 +270,5 @@ with tabs[1]:
             with PROFILE_PATH.open("w", encoding="utf-8") as f:
                 json.dump(new_profile, f, indent=2, ensure_ascii=False)
             st.success("Profilen har sparats!")
+            st.session_state.view = "question"
             st.rerun()
