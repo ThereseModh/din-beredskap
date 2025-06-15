@@ -35,9 +35,17 @@ Projektet använder RAG (Retrieval-Augmented Generation), där relevanta textavs
 
 3. **Starta appen**
 
-   ```bash
-   streamlit run src/app.py
-   ```
+### Terminalversion:
+
+```bash
+python src/app.py
+```
+
+### Streamlit-version (webbgränssnitt):
+
+```bash
+streamlit run src/streamlit_main.py
+```
 
 ---
 
@@ -45,27 +53,27 @@ Projektet använder RAG (Retrieval-Augmented Generation), där relevanta textavs
 
 ```
 data/
-├── chunks.json
-├── chunk_embeddings.pkl
-├── profile.json
-├── MSB/, Röda korset/, ...
+├── chunks.json # Textbitar från dokumenten
+├── chunk_embeddings.pkl # Embeddings för retrieval (pickle-format)
+├── profile.json # Användarens hushållsprofil (JSON format)
+├── MSB/, Röda korset/, ... # Råmaterial från olika svenska kriskällor
 
 scripts/
-├── create_chunks_json.py
-└── precompute_embeddings.py
+├── create_chunks_json.py # Delar upp texter i mindre chunkar
+└── precompute_embeddings.py # Skapar embeddings för chunks och sparar dom
 
 src/
-├── app.py
-├── chunker.py
-├── generator.py
-├── profile_handler.py
-├── retriever.py
-├── streamlit_new.py
-└── style_new.css
+├── app.py # Terminalversionens startfil
+├── chunker.py # Funktion för att dela upp texter
+├── generator.py # Skickar prompt + kontext till OpenAI
+├── profile_handler.py # Läser, sparar och visar hushållsprofil
+├── retriever.py # Hämtar relevanta chunks mha embeddings
+├── streamlit_main.py # Webappens startfil (STreamlit-gränssnitt)
+└── style.css # CSS för Streamlit-utseende
 
-README.md
-requirements.txt
-.env
+README.md # Projektbeskrivning och instruktioner
+requirements.txt # Lista över beroenden
+.env # Dold, innehåller API-nyckel
 ```
 
 ---
@@ -82,9 +90,9 @@ requirements.txt
 
 ## 🔍 Förslag på vidareutveckling
 
-- Bättre retrieval (FAISS, Chroma)
+- Byt ut TF-IDF eller likhetsmått mot FAISS/Chroma för snabbare och smartare retrieval
 - DSPy för utvärdering och prompt-tuning
-- Fler krisscenarier
+- Fler krisscenarier och mer variation i svaren
 - Export av profil och frågor/svar
 - UI med betygssättning av svar
 - Offline-läge med lokal profil och cache av scenariodata för mobilanvändning (PWA eller native wrapper)
