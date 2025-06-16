@@ -90,7 +90,7 @@ requirements.txt # Lista över beroenden
 
 ## 🔍 Förslag på vidareutveckling
 
-- Byt ut TF-IDF eller likhetsmått mot FAISS/Chroma för snabbare och smartare retrieval
+- Byta ut nuvarande in-memory cosine similarity mot FAISS/Chroma för snabbare och smartare retrieval
 - DSPy för utvärdering och prompt-tuning
 - Fler krisscenarier och mer variation i svaren
 - Export av profil och frågor/svar
